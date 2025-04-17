@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <link th:href="@{/main.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <div>
+        <div class="flex flex-col gap-4">
+            <h2>Main</h2>
+            <img class="mx-auto h-10 w-auto" src="/images/aot.png" alt="AOT">
+            <div>Login สำเร็จ</div>
+            <div class="border border-black">
+                <div class="text-blue-500">ทดสอบ class tailwind</div>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+            </form>
+            <div class="py-8">
+                <p>Componemt Button</p>
+
+                <div class="flex items-center gap-2">
+                    <a class="link rounded-sm px-8 py-3 bg-indigo-600 text-white text-sm" th:href="@{/management}">Go To
+                        Management</a>
+                    <div class="">
+                        <span th:replace="fragments/button :: button('Go To Management', '/management')"></span>
+                    </div>
+                    <div class="">
+                        <span th:replace="fragments/button :: button_change('Go To Management', '/management')"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12">
+            <div class="col-span-4"><span>Menu 1</span>
+                <p>Content Here</p>
+                <p>เครื่องบินขาออก</p>
+            </div>
+            <div class="col-span-4"><span>Menu 2</span>
+                <p>Content Here</p>
+                <p>เครื่องบินขาเข้า</p>
+            </div>
+            <div class="col-span-4"><span>Menu 3</span>
+                <div class="flex flex-col">
+                    <span>Content Here</span>
+                    <span>จัดการ User</span>
+                </div>
+
+            </div>
+        </div>
+        <p th:text="'จำนวนผู้ใช้ทั้งหมด: ' + ${users.size()}">จำนวน</p>
+        <!-- ปุ่มเปิด Modal -->
+        <button onclick="toggleModal()" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
+            เพิ่มข้อมูล
+        </button>
+
+        <h2>User Table</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Staff ID</th>
+                    <th>Airport</th>
+                    <th>Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.password}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.role}"></td>
+                    <td th:text="${user.staffid}"></td>
+                    <td th:text="${user.hopo}"></td>
+                    <td th:text="${user.remark}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+
+    <!-- Modal -->
+    <div id="myModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded shadow-lg w-1/3">
+            <h2 class="text-xl mb-4 font-semibold">เพิ่มผู้ใช้ใหม่</h2>
+
+            <form action="/management/save" method="post">
+                <div class="mb-2">
+                    <label class="block text-gray-700">Username:</label>
+                    <input type="text" name="username" class="border border-gray-300 rounded w-full p-2" required>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-gray-700">Password:</label>
+                    <input type="text" name="password" class="border border-gray-300 rounded w-full p-2" required>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-gray-700">Email:</label>
+                    <input type="email" name="email" class="border border-gray-300 rounded w-full p-2">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-gray-700">Role:</label>
+                    <input type="text" name="role" class="border border-gray-300 rounded w-full p-2">
+                </div>
+                <div class="flex justify-end mt-4">
+                    <button type="submit"
+                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">บันทึก</button>
+                    <button type="button" onclick="toggleModal()"
+                        class="ml-2 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded">ยกเลิก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+<!-- JavaScript -->
+<script>
+    function toggleModal() {
+        const modal = document.getElementById("myModal");
+        modal.classList.toggle("hidden");
+        modal.classList.toggle("flex");
+    }
+</script>
+
+</html>
+
+<!-- <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<h1>All Users</h1>
+
+<p th:text="'จำนวนผู้ใช้ทั้งหมด: ' + ${users.size()}">จำนวน</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Username</th><th>Email</th><th>Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}">username</td>
+            <td th:text="${user.email}">email</td>
+            <td th:text="${user.role}">role</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html> -->
