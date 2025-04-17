@@ -9,82 +9,71 @@
 
 <body>
     <div>
-        <div class="flex flex-col gap-4">
-            <h2>Main</h2>
-            <img class="mx-auto h-10 w-auto" src="/images/aot.png" alt="AOT">
-            <div>Login สำเร็จ</div>
-            <div class="border border-black">
-                <div class="text-blue-500">ทดสอบ class tailwind</div>
-            </div>
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
-            </form>
-            <div class="py-8">
-                <p>Componemt Button</p>
-
-                <div class="flex items-center gap-2">
-                    <a class="link rounded-sm px-8 py-3 bg-indigo-600 text-white text-sm" th:href="@{/management}">Go To
-                        Management</a>
-                    <div class="">
-                        <span th:replace="fragments/button :: button('Go To Management', '/management')"></span>
-                    </div>
-                    <div class="">
-                        <span th:replace="fragments/button :: button_change('Go To Management', '/management')"></span>
-                    </div>
-                </div>
+        <div class="pt-10">
+            <div class="text-[50px] text-black w-full text-center p-3 grid grid-cols-3 place-items-center">
+                <img class="col-span-1 mx-auto h-25 w-auto" src="/images/aot.png" alt="AOT">
+                <span class="col-span-1 flex">
+                    <svg width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M9.3 12.7999C8.9 12.7999 8.4 12.5999 8.4 12.1999C8.4 11.7999 8.9 11.8999 9.3 11.1999C9.3 11.1999 11.1 6.29993 7.5 6.29993C3.9 6.29993 5.7 11.1999 5.7 11.1999C6.1 11.8999 6.6 11.7999 6.6 12.1999C6.6 12.5999 6.1 12.7999 5.7 12.7999C5.1 12.8999 4.6 12.7999 4 13.3999V19.0999H9C9.2 17.3999 9.7 13.8999 10.1 12.9999L10.2 12.8999C10 12.7999 9.7 12.7999 9.3 12.7999Z"
+                            fill="#000" fill-opacity="0.6" />
+                        <path
+                            d="M20 12.6C19.3 11.8 18.7 11.9 18 11.8C17.5 11.7 16.9 11.6 16.9 11.1C16.9 10.6 17.5 10.8 18 9.9C18 9.9 20.1 4 15.8 4C11.4 4.1 13.5 10 13.5 10C14 10.8 14.6 10.7 14.6 11.1C14.6 11.6 14 11.7 13.5 11.8C12.6 11.9 11.8 11.8 11 13.3C10.6 14.2 10 19.1 10 19.1H20V12.6Z"
+                            fill="#FF0000" fill-opacity="0.6" />
+                    </svg>
+                    <span class="">Management</span>
+                </span>
 
             </div>
+
         </div>
 
-        <div class="grid grid-cols-12">
-            <div class="col-span-4"><span>Menu 1</span>
-                <p>Content Here</p>
-                <p>เครื่องบินขาออก</p>
-            </div>
-            <div class="col-span-4"><span>Menu 2</span>
-                <p>Content Here</p>
-                <p>เครื่องบินขาเข้า</p>
-            </div>
-            <div class="col-span-4"><span>Menu 3</span>
-                <div class="flex flex-col">
-                    <span>Content Here</span>
-                    <span>จัดการ User</span>
-                </div>
-
-            </div>
+        <div class="flex justify-between items-center px-8 py-4">
+            <p th:text="'จำนวนผู้ใช้ทั้งหมด: ' + ${users.size()}">จำนวน</p>
+            <button onclick="toggleModal()"
+                class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
+                เพิ่มข้อมูล
+            </button>
         </div>
-        <p th:text="'จำนวนผู้ใช้ทั้งหมด: ' + ${users.size()}">จำนวน</p>
-        <!-- ปุ่มเปิด Modal -->
-        <button onclick="toggleModal()" class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
-            เพิ่มข้อมูล
-        </button>
 
-        <h2>User Table</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Password</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Staff ID</th>
-                    <th>Airport</th>
-                    <th>Remark</th>
-                </tr>
-            </thead>
-            <tbody>
-            <tbody>
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.username}"></td>
-                    <td th:text="${user.password}"></td>
-                    <td th:text="${user.email}"></td>
-                    <td th:text="${user.role}"></td>
-                    <td th:text="${user.staffid}"></td>
-                    <td th:text="${user.hopo}"></td>
-                    <td th:text="${user.remark}"></td>
-                </tr>
-            </tbody>
-        </table>
+
+        <div class="px-8 w-full">
+            <div class="overflow-auto">
+                <table class="table-auto">
+                    <thead class="">
+                        <tr class="truncate">
+                            <th class="text-[20px] border border-black min-w-[100px] w-[150px]">Username</th>
+                            <th class="text-[20px] border border-black min-w-[100px] w-[150px]">Password</th>
+                            <th class="text-[20px] border border-black min-w-[100px] w-[150px]">Email</th>
+                            <th class="text-[20px] border border-black min-w-[250px] w-[250px]">Role</th>
+                            <th class="text-[20px] border border-black min-w-[250px] w-[250px]">Staff ID</th>
+                            <th class="text-[20px] border border-black min-w-[250px] w-[250px]">Airport</th>
+                            <th class="text-[20px] border border-black w-full">Remark</th>
+                            <th>Edit Or Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tbody>
+                        <tr th:each="user : ${users}">
+                            <td class="border border-black p-2" th:text="${user.username}"></td>
+                            <td class="border border-black p-2" th:text="${user.password}"></td>
+                            <td class="border border-black p-2" th:text="${user.email}"></td>
+                            <td class="border border-black p-2" th:text="${user.role}"></td>
+                            <td class="border border-black p-2" th:text="${user.staffid}"></td>
+                            <td class="border border-black p-2" th:text="${user.hopo}"></td>
+                            <td class="border border-black p-2" th:text="${user.remark}"></td>
+                            <td>
+                                <button class="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
+                                    DELETE
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
 
     </div>
 
