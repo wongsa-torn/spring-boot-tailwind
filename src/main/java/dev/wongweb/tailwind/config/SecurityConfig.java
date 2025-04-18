@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 // import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import dev.wongweb.tailwind.service.CustomUserDetailsService;
 
@@ -30,18 +31,33 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
+        return http.csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+
+                // สำหรับทดสอบ
+                // http.csrf().disable()
+                // สำหรับใช้งานจริง
+                // http.csrf(csrf ->
+                // csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/main.css").permitAll()
-                        // .requestMatchers(HttpMethod.POST, "/management/add").permitAll() // ✅ อนุญาต
-                        // POST
-                        // // /management/add
-                        // .requestMatchers("/management/**").authenticated() // ✅ ปล่อยให้เข้า
-                        // /management ได้หลัง login
-                        // .requestMatchers("/management/**").permitAll()
-                        // .requestMatchers(HttpMethod.POST, "/management/save").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/management/save").permitAll()
+
+                        // ✅ ฟอร์ม add และ save ใช้ POST
+                        .requestMatchers(HttpMethod.POST, "/management/add").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST, "/management/save").hasAnyRole("ADMIN", "USER")
+
+                        // ✅ การดึงฟอร์ม edit ใช้ GET
+                        .requestMatchers(HttpMethod.GET, "/management/edit/**").hasAnyRole("ADMIN", "USER")
+
+                        // ✅ อัปเดต user ใช้ POST
+                        .requestMatchers(HttpMethod.POST, "/management/update").hasAnyRole("ADMIN", "USER")
+
+                        // ✅ การลบ user ใช้ DELETE
+                        .requestMatchers(HttpMethod.DELETE, "/management/delete/**").hasAnyRole("ADMIN", "USER")
+
                         .anyRequest().authenticated())
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll())
