@@ -16,4 +16,10 @@ public class HomeController {
         return "login/login";
     }
 
+    //TEST PAGE AND FUCNTION
+    @GetMapping("/arrival_flight")
+    public String AirLogin() {
+        return "arrival_flight/arrival_flight";
+    }
+
 }
